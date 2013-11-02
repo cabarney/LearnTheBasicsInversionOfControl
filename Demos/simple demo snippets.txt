@@ -1,11 +1,11 @@
     public static class Factory
     {
-        public static IShippingService CreateUpsShippingService()
+        public static IShippingService CreateShippingService()
         {
             return new UpsShippingService();
         }
 
-        public static IOrderProcessor CreatOrderProcessor()
+        public static IOrderProcessor CreateOrderProcessor()
         {
             return new OrderProcessor();
         }
@@ -24,7 +24,7 @@
             switch (typeof (T).Name)
             {
                 case "IShippingService":
-                    return Factory.CreateUpsShippingService() as T;
+                    return Factory.CreateShippingService() as T;
                 case "IOrderProcessor":
                     return new OrderProcessor() as T;
             }
@@ -32,7 +32,26 @@
         }
     }
 
+    public class UpsShippingService : IShippingService
+    {
+        public string Key { get { return "UPS"; } }
+        public string Name { get { return "UPS"; } }
 
+        public void ShipOrder(Order order)
+        {
+            // Do shipping stuff
+        }
+    }
+    public class FedExShippingService : IShippingService
+    {
+        public string Key { get { return "FedEx"; } }
+        public string Name { get { return "Federal Express"; } }
+
+        public void ShipOrder(Order order)
+        {
+            // Do shipping stuff
+        }
+    }
 
 
     public class OrderProcessor : IOrderProcessor
@@ -57,23 +76,18 @@
 
     public static class Factory
     {
-        public static IShippingService CreateUpsShippingService()
+        public static IEnumerable<IShippingService> CreateShippingServices()
         {
-            return new UpsShippingService();
-        }
-        public static IShippingService CreateFedExShippingService()
-        {
-            return new FedExShippingService();
+            return new List<IShippingService>
+            {
+                new UpsShippingService(),
+                new FedExShippingService()
+            };
         }
 
-        public static IOrderProcessor CreatOrderProcessor()
+        public static IOrderProcessor CreateOrderProcessor()
         {
-            var shippers = new List<IShippingService>
-            {
-                CreateUpsShippingService(),
-                CreateFedExShippingService()
-            };
-            return new OrderProcessor(shippers);
+            return new OrderProcessor(CreateShippingServices());
         }
     }
 
