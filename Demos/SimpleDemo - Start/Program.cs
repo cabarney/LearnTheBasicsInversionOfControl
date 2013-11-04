@@ -27,8 +27,8 @@
 
     public class UpsShippingService
     {
-        public string Key { get; set; }
-        public string Name { get; set; }
+        public string Key { get { return "UPS"; } }
+        public string Name { get { return "United Parcel Service"; } }
 
         public void ShipOrder(Order order)
         {

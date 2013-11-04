@@ -15,33 +15,6 @@
 
 
 
-
-
-    public static class ServiceLocator
-    {
-        public static T GetService<T>() where T: class
-        {
-            switch (typeof (T).Name)
-            {
-                case "IShippingService":
-                    return Factory.CreateShippingService() as T;
-                case "IOrderProcessor":
-                    return new OrderProcessor() as T;
-            }
-            return null;
-        }
-    }
-
-    public class UpsShippingService : IShippingService
-    {
-        public string Key { get { return "UPS"; } }
-        public string Name { get { return "UPS"; } }
-
-        public void ShipOrder(Order order)
-        {
-            // Do shipping stuff
-        }
-    }
     public class FedExShippingService : IShippingService
     {
         public string Key { get { return "FedEx"; } }
@@ -50,23 +23,6 @@
         public void ShipOrder(Order order)
         {
             // Do shipping stuff
-        }
-    }
-
-
-    public class OrderProcessor : IOrderProcessor
-    {
-        private readonly IEnumerable<IShippingService> _shippers;
-
-
-        public OrderProcessor(IEnumerable<IShippingService> shippers)
-        {
-            _shippers = shippers;
-        }
-
-        public void ProcessOrder(Order order)
-        {
-            _shippers.Single(x=>x.Key == order.ShippingMethodKey).ShipOrder(order);
         }
     }
 

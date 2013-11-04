@@ -97,7 +97,7 @@ namespace SimpleDemo
     public class UpsShippingService : IShippingService
     {
         public string Key { get { return "UPS"; } }
-        public string Name { get { return "UPS"; } }
+        public string Name { get { return "United Parcel Service"; } }
 
         public void ShipOrder(Order order)
         {
